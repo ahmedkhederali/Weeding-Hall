@@ -1,0 +1,61 @@
+.aaa{
+    color: #777;
+    border-bottom: 3px dashed #777;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  .parent{
+    background: #eee;
+    display:flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    min-height: 100vh;
+    color: #333;
+  }
+  .hh1{
+    width: 100%;
+    display:block;
+    text-align: center;
+    font-family: sans-serif;
+    font-weight: bolder;
+    font-size: 5em;
+  }
+  .parent > div{
+    min-width: 25vw;
+    color: #d55;
+  }
+  .box2{
+    color: #333;
+    text-align: center;
+  }
+  .hh2{
+    font-family: sans-serif;
+    font-weight: bolder;
+  }
+  .notFound{
+    fill: #D55;
+    stroke: #D55;
+    stroke-width: 1.5;
+    animation: lupa 5s infinite;
+  }
+  @keyframes lupa{
+    from{
+      fill: #f77;
+      stroke: #d55;
+      stroke-dasharray: 0;
+    }to{
+      fill: #d55;
+      stroke: #d55;
+      stroke-dasharray: 95;
+    }
+  }
+  .notFound rect{
+    stroke: none;
+  }
+  
+  @media screen and (max-width: 600px){
+    body{
+      flex-direction: column;
+    }
+  }

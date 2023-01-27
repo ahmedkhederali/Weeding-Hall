@@ -1,0 +1,18 @@
+How to Work redis?
+1-npm i redis 
+2-const client = Redis.createClient({
+  legacyMode: true,
+  PORT: 5001,
+});
+client.connect().catch(console.error);
+const DEFAULY_EXPIRATION = 3600;
+
+3-  client.setEx("hall", DEFAULY_EXPIRATION, JSON.stringify(data));
+4-client.get("hall", async (error, data) => {
+      if (error) return res.status(500).json({ msg: error.message });
+      res.status(200).json(JSON.stringify(data))
+      })
+
+      لازم لما اجي اقوم السيرفر بعد كده افتح 2 ترمنال واحده اكتب فيها 
+      1-redis-server
+      2-redis-cli
