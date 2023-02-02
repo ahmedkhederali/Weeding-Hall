@@ -52,4 +52,4 @@ First website of Wedding Hall in Egypt
           -Dashboard of Hall
           -image of big Slider & small Slider
           -Edit information of Hall 
-          -Preview Hal
+          -Preview Hall
