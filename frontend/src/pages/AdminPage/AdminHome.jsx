@@ -26,6 +26,8 @@ const AdminHome = () => {
   const [closed, setClosed] = useState(0);
   const [allHall, setAllHall] = useState(0);
   const [allUser, setAllUser] = useState(0);
+  const [allReport, setAllReport] = useState(0);
+
   const [allBook, setAllBook] = useState(0);
   const [allAdmins, setAllAdmins] = useState(0);
 
@@ -38,6 +40,8 @@ const AdminHome = () => {
         setAllUser(res.data.allUsers);
         setAllBook(res.data.allBook);
         setAllAdmins(res.data.allAdmins);
+        setAllReport(res.data.allReport);
+
       })
       .catch((err) => {
         console.log(err);
@@ -60,10 +64,11 @@ const AdminHome = () => {
             justifyContent="center"
             textAlign={"center"}
           >
-            <Box flex={1} mr={2} mb={2} bg={bgd}>
+            <Box flex={1} ml={2} mr={2} mb={2} bg={bgd}>
               <Heading size="2xl"> Users</Heading>
               <Text fontSize="4xl">{allUser}</Text>
             </Box>
+            
             <Box flex={1} mr={2} mb={2} bg={bgd}>
               <Heading size="2xl"> Admins</Heading>
               <Text fontSize="4xl">{allAdmins}</Text>
@@ -75,6 +80,10 @@ const AdminHome = () => {
             <Box flex={1} bg={bgd} mr={2} mb={2}>
               <Heading size="2xl">Booked</Heading>
               <Text fontSize="4xl">{allBook}</Text>
+            </Box>
+            <Box flex={1} mr={2} mb={2} bg={bgd}>
+              <Heading size="2xl"> Reports</Heading>
+              <Text fontSize="4xl">{allUser}</Text>
             </Box>
           </Flex>
           <Flex mt={4} flexDirection={{ base: "column", sm: "row" }}>

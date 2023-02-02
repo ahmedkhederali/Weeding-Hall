@@ -38,15 +38,9 @@ import {
   FiBell,
   FiChevronDown,
 } from "react-icons/fi";
-import {
-  AiFillDashboard,
-} from "react-icons/ai";
-import {
-  MdOutlineMapsHomeWork,
-} from "react-icons/md";
-import {
-  GoReport,
-} from "react-icons/go";
+import { AiFillDashboard } from "react-icons/ai";
+import { MdOutlineMapsHomeWork } from "react-icons/md";
+import { GoReport } from "react-icons/go";
 
 import { ReactText } from "react";
 import { getUserByID } from "../services/AuthServices";
@@ -54,24 +48,25 @@ const admin = localStorage.getItem("admin") === "admin" ? true : false;
 const user = localStorage.getItem("admin") === "user" ? true : false;
 
 const LinkItems = [
-  { name: admin ? "Dashboard" :"Home", icon: admin ? AiFillDashboard : FiHome, loc: "/" },
-  { 
-    
-    name: admin ? "Create Hall"  : "Trending", 
-    icon: admin ? FiHome  : FiTrendingUp, 
-    loc: admin ? "/createhall" : "/trend"
-   },
-  { 
-    name: admin ? "All Hall"  : "Explore", 
-    icon: admin ? MdOutlineMapsHomeWork  : FiStar, 
-    loc: admin ? "/adminallhall" : "/explore"
-    
+  {
+    name: admin ? "Dashboard" : "Home",
+    icon: admin ? AiFillDashboard : FiHome,
+    loc: "/",
   },
-  { 
-    name: admin ? "All Report"  : "Favourites", 
-    icon: admin ? GoReport  : FiStar, 
-    loc: admin ? "/adminallreport" : "/faviourt"
-    
+  {
+    name: admin ? "Create Hall" : "Trending",
+    icon: admin ? FiHome : FiTrendingUp,
+    loc: admin ? "/createhall" : "/trend",
+  },
+  {
+    name: admin ? "All Hall" : "Explore",
+    icon: admin ? MdOutlineMapsHomeWork : FiStar,
+    loc: admin ? "/adminallhall" : "/explore",
+  },
+  {
+    name: admin ? "All Report" : "Favourites",
+    icon: admin ? GoReport : FiStar,
+    loc: admin ? "/adminallreport" : "/faviourt",
   },
   { name: "Settings", icon: FiSettings, loc: "/y" },
 ];
@@ -197,7 +192,7 @@ function logOut() {
 }
 const MobileNav = ({ onOpen, user, ...rest }) => {
   const colors2 = useColorModeValue("black.300", "white.200");
-
+  const usertoken = localStorage.getItem("admin") === "user" ? true : false;
   const { colorMode, toggleColorMode } = useColorMode();
   return (
     <Flex
@@ -317,12 +312,16 @@ const MobileNav = ({ onOpen, user, ...rest }) => {
               <Link to="/profile">
                 <MenuItem>Profile</MenuItem>
               </Link>
-              <Link to="/reports">
-                <MenuItem>Reports</MenuItem>
-              </Link>
-              <Link to="/bookpage">
-                <MenuItem>Booked</MenuItem>
-              </Link>
+              {usertoken && (
+                <>
+                  <Link to="/reports">
+                    <MenuItem>Reports</MenuItem>
+                  </Link>
+                  <Link to="/bookpage">
+                    <MenuItem>Booked</MenuItem>
+                  </Link>
+                </>
+              )}
               <MenuDivider />
               <MenuItem onClick={logOut}>Sign out</MenuItem>
             </MenuList>

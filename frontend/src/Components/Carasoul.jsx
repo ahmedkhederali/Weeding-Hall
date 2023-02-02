@@ -105,9 +105,9 @@ export default function CaptionCarousel() {
             backgroundPosition="center"
             backgroundRepeat="no-repeat"
             backgroundSize="cover"
-            backgroundImage={`url(${card.images})`}>
+            backgroundImage={`url(${card.url})`}>
             {/* This is the block you need to change, to customize the caption */}
-            <Container size="container.lg" height="600px" position="relative">
+            {/* <Container size="container.lg" height="600px" position="relative">
               <Stack
                 spacing={6}
                 w={'full'}
@@ -122,7 +122,7 @@ export default function CaptionCarousel() {
                   {"hello"}
                 </Text>
               </Stack>
-            </Container>
+            </Container> */}
           </Box>
         )
         )}

@@ -5,12 +5,12 @@ const Report = require("../models/Report");
 const cloudinary = require("cloudinary");
 const Redis = require("redis");
 
-const client = Redis.createClient({
-  legacyMode: true,
-  PORT: 5001,
-});
-client.connect().catch(console.error);
-const DEFAULY_EXPIRATION = 10;
+// const client = Redis.createClient({
+//   legacyMode: true,
+//   PORT: 5001,
+// });
+// client.connect().catch(console.error);
+// const DEFAULY_EXPIRATION = 10;
 //Filtring ,Sorting and Pagination ترقيم الصفحات
 class APIFeature {
   constructor(query, queryString) {
@@ -63,7 +63,7 @@ const CreateHall = async (req, res) => {
       name,
       namear,
       capacity,
-      imgs,
+      // imgs,
       location,
       locationar,
       floor,
@@ -89,7 +89,7 @@ const CreateHall = async (req, res) => {
       !floor ||
       !locationar ||
       !capacity ||
-       !imgs ||
+      // !imgs ||
       !location ||
       !price ||
       !phone ||
@@ -133,7 +133,7 @@ const CreateHall = async (req, res) => {
       namear,
       capacity,
       mohafzaar,
-       imgs,
+      // imgs,
       floor,
       threeplan,
       location,
@@ -169,29 +169,47 @@ const deleteHall = async (req, res) => {
     if (!public_id) return res.status(400).json({ msg: "No Image Selected" });
     await cloudinary.v2.uploader.destroy(public_id, async (err, result) => {
       if (err) throw err;
-      console.log("done1");
     });
     const hall = await Hall.findByIdAndDelete(id);
     if (!hall)
       return res.status(500).json({ msg: "There Is No hall With This ID" });
-    console.log("done 2");
+
     res.status(200).json({ msg: "Hall Deleted.." });
   } catch (error) {
     return res.status(500).json({ msg: error.message });
   }
 };
+//Get All Hall Using Redis
+
+// const GetAllHall = async (req, res) => {
+//   try {
+//     //getOrSetCach( key_name , callback Fun )
+//     const halls = await getOrSetCach("halls", async () => {
+//       const features = new APIFeature(Hall.find(), req.query)
+//         .filtering()
+//         .sorting()
+//         .pagination();
+
+//       const data = await features.query;
+//       return data;
+//     });
+//     res.status(200).json({ halls, msg: "SuccessFuly..." });
+//   } catch (error) {
+//     return res.status(500).json({ msg: error.message });
+//   }
+// };
+
 const GetAllHall = async (req, res) => {
   try {
-    //getOrSetCach( key_name , callback Fun )
-    const halls = await getOrSetCach("halls", async () => {
+   
       const features = new APIFeature(Hall.find(), req.query)
         .filtering()
         .sorting()
         .pagination();
 
-      const data = await features.query;
-      return data;
-    });
+      const halls = await features.query;
+    ;
+    
     res.status(200).json({ halls, msg: "SuccessFuly..." });
   } catch (error) {
     return res.status(500).json({ msg: error.message });
@@ -287,6 +305,60 @@ const updateHall = async (req, res) => {
     });
   }
 };
+const updateHallImages = async (req, res) => {
+  try {
+    const singleHall = await Hall.findById(req.params.id);
+    if (singleHall) {
+      const myCloud = await cloudinary.v2.uploader.upload(req.body.imgs, {
+        folder: "Hall/admin_images",
+        width: 150,
+        crop: "scale",
+      });
+      var imgsobj = {
+        public_id: myCloud.public_id,
+        url: myCloud.secure_url,
+      };
+      const singleHallUpdated = await Hall.findByIdAndUpdate(
+        { _id: req.params.id },
+        { $push: { imgs: imgsobj } }
+      );
+      singleHall.imgs.push(imgsobj);
+      res.status(200).json({
+        msg: "Image Successfuly Added",
+        msgar: "تم اضافه الصوره بنجاح",
+      });
+    } else {
+      res.status(200).json({
+        msg: "There Is No Hall With This ID",
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      status: "failed",
+      error,
+    });
+  }
+};
+const deleteImageFromSlider = async (req, res) => {
+  const { public_id, id, index } = req.body;
+  console.log(id, index);
+  if (!public_id) return res.status(400).json({ msg: "No Image Selected" });
+  await cloudinary.v2.uploader.destroy(public_id, async (err, result) => {
+    if (err) throw err;
+    const hall = await Hall.findById(id);
+    if (hall) {
+      const entireArrimgs = hall.imgs;
+      entireArrimgs.splice(index, 1);
+      console.log(entireArrimgs);
+      const newhall = await Hall.findByIdAndUpdate(
+        id,
+        { imgs: entireArrimgs },
+        { new: true }
+      );
+      res.status(200).json({ newhall, msg: "IMage Deleted.." });
+    }
+  });
+};
 const updateHallRate = async (req, res) => {
   try {
     const rating = await Hall.findByIdAndUpdate(
@@ -335,13 +407,28 @@ const deleteLike = async (req, res) => {
     });
   }
 };
+
+//get Hall By ID using Redis
+
+// const getHallById = async (req, res) => {
+//   try {
+//     //getOrSetCach( key_name , callback Fun )
+//     const hall = await getOrSetCach("hall", async () => {
+//       const data = await Hall.findById(req.params.id);
+//       return data;
+//     });
+//     res.status(200).json({ hall, msg: "SuccessFuly..." });
+//   } catch (error) {
+//     res.status(400).json({
+//       status: "failed",
+//       error,
+//     });
+//   }
+// };
+
 const getHallById = async (req, res) => {
   try {
-    //getOrSetCach( key_name , callback Fun )
-    const hall = await getOrSetCach("hall", async () => {
-      const data = await Hall.findById(req.params.id);
-      return data;
-    });
+    const hall = await Hall.findById(req.params.id);
     res.status(200).json({ hall, msg: "SuccessFuly..." });
   } catch (error) {
     res.status(400).json({
@@ -378,13 +465,14 @@ const exploreHall = async (req, res) => {
     });
   }
 };
-
 // ADmins Functions
 const getAllTypeHall = async (req, res) => {
   try {
     const allHall = await Hall.find({});
     const allUsers = await User.find({ role: "user" });
     const allBook = await Book.find({});
+    const allReport = await Report.find({});
+
     const allAdmins = await User.find({ role: "admin" });
     const allOpenHall = await Hall.find({ halltype: "open" });
     const allClosedHall = await Hall.find({ halltype: "close" });
@@ -396,6 +484,7 @@ const getAllTypeHall = async (req, res) => {
       allUsers: allUsers.length,
       allBook: allBook.length,
       allAdmins: allAdmins.length,
+      allReport:allReport.length
     });
   } catch (error) {
     res.status(400).json({
@@ -404,7 +493,6 @@ const getAllTypeHall = async (req, res) => {
     });
   }
 };
-
 const getAllGovernorateHall = async (req, res) => {
   try {
     const labels = [];
@@ -435,7 +523,6 @@ const getAllGovernorateHall = async (req, res) => {
     });
   }
 };
-
 const getAllRportPerHall = async (req, res) => {
   try {
     const labels = [];
@@ -467,7 +554,6 @@ const getAllRportPerHall = async (req, res) => {
     });
   }
 };
-
 // Function To handle Redis Cache
 const getOrSetCach = (key, cb) => {
   return new Promise((resolve, reject) => {
@@ -495,4 +581,6 @@ module.exports = {
   getAllTypeHall,
   getAllGovernorateHall,
   getAllRportPerHall,
+  deleteImageFromSlider,
+  updateHallImages,
 };

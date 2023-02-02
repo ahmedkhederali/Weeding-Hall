@@ -10,6 +10,7 @@ import {
 import React from "react";
 
 const Avatars = ({ user, index }) => {
+  console.log(user)
   return (
     <Flex spacing="2">
       <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">

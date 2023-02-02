@@ -44,18 +44,14 @@ const HallSchema = new mongoose.Schema({
   },
   imgs: [
     {
-      images: {
+      public_id: {
         type: String,
-        u: [true, "Please Enter images"],
+        required: [true, "public_id"],
       },
-      // headerText: {
-      //   type: String,
-      //   required: [true, "Please Enter headerText"],
-      // },
-      // descText: {
-      //   type: String,
-      //   required: [true, "Please Enter descText"],
-      // },
+      url: {
+        type: String,
+        required: [true, "Please Enter Hall Img Poster url"]
+      },
     },
   ],
   hallimgposter: {
@@ -67,7 +63,6 @@ const HallSchema = new mongoose.Schema({
       type: String,
       required: [true, "Please Enter Hall Img Poster url"],
     },
-    
   },
   threeplan: [
     {
@@ -124,7 +119,6 @@ const HallSchema = new mongoose.Schema({
   floor: {
     type: Number,
     required: [true, "Please Enter Num floor"],
-
   },
   videoUrl: {
     type: String,

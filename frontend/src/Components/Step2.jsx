@@ -8,16 +8,43 @@ import {
   Heading,
   Input,
   Select,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
+import { checkifThieranthorBookIntheSameDay, checkifThieranthorBookIntheSameDayDuringBook } from "../services/BookService";
 import { getHallById } from './../services/HallServices';
 
 const Step2 = ({
   hallName,hallPrice,hallPhone,hallLocation,date,cake,priceOfOneCake,cans,pricOneCans,
   setHallName,setHallPrice,setHallPhone,setHallLocation,setDate,setCake,setPriceCake,setCans,setPriceOfOneCans
 }) => {
-
+const {id}=useParams();
+const toast = useToast(); 
+const handleDateFun = (e) => {
+  checkifThieranthorBookIntheSameDayDuringBook( e, id).then(
+    (res) => {
+      if (res.status === "booked") {
+        toast({
+          title: "Error!",
+          description: `${res.msg}`,
+          status: "error",
+          duration: 2000,
+          isClosable: true,
+        });
+      } else {
+        setDate(e);
+        toast({
+          title: "Free Date",
+          description: "You R Lucky this date is Free To Book",
+          status: "success",
+          duration: 2000,
+          isClosable: true,
+        });
+      }
+    }
+  );
+};
   return (
     <Box mt={{ base: 2, md: 5 }}>
       <Center mb={1}>
@@ -64,7 +91,8 @@ const Step2 = ({
           placeholder="Select Date Of Weeding"
           type={"date"}
           value={date} 
-          onChange={(e)=>setDate(e.target.value)}
+          //onChange={(e)=>setDate(e.target.value)}
+          onChange={(e) => handleDateFun(e.target.value)}
           
         />
       </FormControl>

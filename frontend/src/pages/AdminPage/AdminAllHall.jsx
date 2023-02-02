@@ -22,13 +22,14 @@ import { DeleteAdminHallByID } from "../../services/AdminServices/DeleteHall";
 import { getAdminAllHall } from "../../services/AdminServices/GetAllHall";
 import CommonPage from "../CommonPage";
 import AdminEditHall from "./AdminEditHall";
-
+import LinearScaleIcon from '@mui/icons-material/LinearScale';
+import { useNavigate } from "react-router-dom";
 const AdminAllHall = () => {
   const [halls, setHall] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [hallID, setHallID] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const nagivate=useNavigate()
   const toast = useToast();
   useEffect(() => {
     getAdminAllHall()
@@ -84,7 +85,7 @@ const AdminAllHall = () => {
           {halls.length > 0 ? (
             <Box>
               <TableContainer p={3}>
-                <Table variant="striped">
+                <Table>
                   <Thead>
                     <Tr>
                       <Th>Image</Th>
@@ -123,6 +124,7 @@ const AdminAllHall = () => {
                               <EditIcon />
                             </Button>
                             <Button
+                            mr={2}
                               onClick={() =>
                                 onClickDelete(
                                   hall._id,
@@ -131,6 +133,13 @@ const AdminAllHall = () => {
                               }
                             >
                               <DeleteIcon />
+                            </Button>
+                            <Button
+                              onClick={() =>
+                                nagivate(`/admin/images/${hall._id}`)
+                              }
+                            >
+                              <LinearScaleIcon />
                             </Button>
                           </Td>
                         </Tr>

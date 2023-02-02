@@ -32,11 +32,13 @@ import PaymentIcon from "@mui/icons-material/Payment";
 import AddLocationIcon from "@mui/icons-material/AddLocation";
 import MosqueIcon from "@mui/icons-material/Mosque";
 import moment from "moment";
-import { checkifThieranthorBookIntheSameDay, updateBook } from "../services/BookService";
-import BalconyIcon from '@mui/icons-material/Balcony';
-import CakeIcon from '@mui/icons-material/Cake';
-const EditBooked = ({ onClose, isOpen, item ,setRefresh, refresh}) => {
-
+import {
+  checkifThieranthorBookIntheSameDay,
+  updateBook,
+} from "../services/BookService";
+import BalconyIcon from "@mui/icons-material/Balcony";
+import CakeIcon from "@mui/icons-material/Cake";
+const EditBooked = ({ onClose, isOpen, item, setRefresh, refresh }) => {
   // All Data of First Step
   const [firstname, setFirstname] = useState(item.firstname);
   const [lastname, setLastname] = useState(item.lastname);
@@ -61,32 +63,32 @@ const EditBooked = ({ onClose, isOpen, item ,setRefresh, refresh}) => {
   const [cans, setCans] = useState(item.cans);
   const [pricOneCans, setPriceOfOneCans] = useState(item.pricOneCans);
   const [totalPrice, setTotalPrice] = useState(
-    cans * pricOneCans + priceOfOneCake * cake +hallPrice
+    cans * pricOneCans + priceOfOneCake * cake + hallPrice
   );
-  const toast = useToast();
-    
-  useEffect(() => {
-    setTotalPrice(cans * pricOneCans + priceOfOneCake * cake + hallPrice) ;
-  }, [cans, pricOneCans, priceOfOneCake, cake,hallPrice]);
+  const toast = useToast(); 
 
-  const formateDate=async ()=>{
+  useEffect(() => {
+    setTotalPrice(cans * pricOneCans + priceOfOneCake * cake + hallPrice);
+  }, [cans, pricOneCans, priceOfOneCake, cake, hallPrice]);
+
+  const formateDate = async () => {
     var dates = new Date(item.date);
-      var day = dates.getDate();
-      var month = dates.getMonth() + 1;
-      var year = dates.getFullYear();
-      
-      if (month < 10) month = "0" + month;
-      if (day < 10) day = "0" + day;
-      
-      var today = year + "-" + month + "-" + day;
-     
-      return today
-  }
-  useEffect(()=>{ 
-    formateDate().then((res)=>{
-      setDate(res)
-    })
-  },[])
+    var day = dates.getDate();
+    var month = dates.getMonth() + 1;
+    var year = dates.getFullYear();
+
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+
+    var today = year + "-" + month + "-" + day;
+
+    return today;
+  };
+  useEffect(() => {
+    formateDate().then((res) => {
+      setDate(res);
+    });
+  }, []);
   const saveChanges = () => {
     updateBook(
       item._id,
@@ -114,7 +116,7 @@ const EditBooked = ({ onClose, isOpen, item ,setRefresh, refresh}) => {
       totalPrice
     )
       .then((res) => {
-        if(res.status==="success"){
+        if (res.status === "success") {
           toast({
             title: "Booked Updated.",
             description: "You have successfully Updated Book.",
@@ -122,9 +124,9 @@ const EditBooked = ({ onClose, isOpen, item ,setRefresh, refresh}) => {
             duration: 2000,
             isClosable: true,
           });
-          setRefresh(!refresh)
+          setRefresh(!refresh);
           onClose(true);
-        }else{
+        } else {
           toast({
             title: "Error!",
             description: `${res.msg}`,
@@ -143,33 +145,31 @@ const EditBooked = ({ onClose, isOpen, item ,setRefresh, refresh}) => {
           isClosable: true,
         });
       });
-  }; 
-  const handleDateFun =(e)=>{
-    
-    checkifThieranthorBookIntheSameDay(item._id,e,item.hallRef).then((res)=>{
-      if(res.status === "booked"){
-        toast({
-          title: "Error!",
-          description: `${res.msg}`,
-          status: "error",
-          duration: 2000,
-          isClosable: true,
-        });
-      }else{
-        setDate(e)
-        toast({
-          title: "Free Date",
-          description: "You R Lucky this date is Free To Book",
-          status: "success",
-          duration: 2000,
-          isClosable: true,
-        });
-        
-
+  };
+  const handleDateFun = (e) => {
+    checkifThieranthorBookIntheSameDay(item._id, e, item.hallRef).then(
+      (res) => {
+        if (res.status === "booked") {
+          toast({
+            title: "Error!",
+            description: `${res.msg}`,
+            status: "error",
+            duration: 2000,
+            isClosable: true,
+          });
+        } else {
+          setDate(e);
+          toast({
+            title: "Free Date",
+            description: "You R Lucky this date is Free To Book",
+            status: "success",
+            duration: 2000,
+            isClosable: true,
+          });
+        }
       }
-
-    })
-  }
+    );
+  };
   return (
     <Box>
       <Drawer isOpen={isOpen} placement="right" onClose={onClose} size={"full"}>
@@ -366,11 +366,11 @@ const EditBooked = ({ onClose, isOpen, item ,setRefresh, refresh}) => {
                       display="flex"
                       flexDirection={{ base: "column", sm: "row" }}
                     >
-                      <FormControl  me={{ base: 0, sm: 2 }}>
+                      <FormControl me={{ base: 0, sm: 2 }}>
                         <FormLabel htmlFor="hallName" fontSize={20}>
                           Religion
                         </FormLabel>
-                        
+
                         <Select
                           placeholder="Select Religion"
                           value={religion}
@@ -380,7 +380,7 @@ const EditBooked = ({ onClose, isOpen, item ,setRefresh, refresh}) => {
                           <option value="christian">Christian</option>
                         </Select>
                       </FormControl>
-                      <FormControl >
+                      <FormControl>
                         <FormLabel htmlFor="nationalid" fontSize={20}>
                           ديانتك
                         </FormLabel>
@@ -448,13 +448,13 @@ const EditBooked = ({ onClose, isOpen, item ,setRefresh, refresh}) => {
                             pointerEvents="none"
                             children={<BalconyIcon color="gray.300" />}
                           />
-                        <Input
-                          name="hallname"
-                          placeholder="Enter Hall Name"
-                          isReadOnly
-                          value={hallName}
-                          onChange={(e) => setHallName(e.target.value)}
-                        />
+                          <Input
+                            name="hallname"
+                            placeholder="Enter Hall Name"
+                            isReadOnly
+                            value={hallName}
+                            onChange={(e) => setHallName(e.target.value)}
+                          />
                         </InputGroup>
                       </FormControl>
                       <FormControl mt={1} width={{ base: "100%", sm: "50%" }}>
@@ -464,13 +464,13 @@ const EditBooked = ({ onClose, isOpen, item ,setRefresh, refresh}) => {
                             pointerEvents="none"
                             children={<FiDollarSign color="gray.300" />}
                           />
-                        <Input
-                          name="hallprice"
-                          isReadOnly
-                          placeholder="Enter Hall Price"
-                          value={hallPrice}
-                          onChange={(e) => setHallPrice(e.target.value)}
-                        />
+                          <Input
+                            name="hallprice"
+                            isReadOnly
+                            placeholder="Enter Hall Price"
+                            value={hallPrice}
+                            onChange={(e) => setHallPrice(e.target.value)}
+                          />
                         </InputGroup>
                       </FormControl>
                     </Box>
@@ -489,13 +489,13 @@ const EditBooked = ({ onClose, isOpen, item ,setRefresh, refresh}) => {
                             pointerEvents="none"
                             children={<AddLocationIcon color="gray.300" />}
                           />
-                        <Input
-                          isReadOnly
-                          name="halllocation"
-                          placeholder="Enter Hall Location"
-                          value={hallLocation}
-                          onChange={(e) => setHallLocation(e.target.value)}
-                        />
+                          <Input
+                            isReadOnly
+                            name="halllocation"
+                            placeholder="Enter Hall Location"
+                            value={hallLocation}
+                            onChange={(e) => setHallLocation(e.target.value)}
+                          />
                         </InputGroup>
                       </FormControl>
                       <FormControl
@@ -554,7 +554,7 @@ const EditBooked = ({ onClose, isOpen, item ,setRefresh, refresh}) => {
                           placeholder="select weeding Date"
                           type={"date"}
                           value={date}
-                          onChange={(e)=>handleDateFun(e.target.value)}
+                          onChange={(e) => handleDateFun(e.target.value)}
                         />
                       </FormControl>
                     </Box>

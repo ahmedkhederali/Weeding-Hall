@@ -6,7 +6,7 @@ const { getAllReports, getReportById, getReportByUserId,
 const auth=require("../middleware/auth");
 const authAdmin=require("../middleware/authAdmin");
 
-router.route('/').get(auth,getAllReports);
+router.route('/').get(auth,authAdmin,getAllReports);
 router.route('/:id').get(auth,getReportById);
 router.route('/user/:id').get(auth,getReportByUserId);
 router.route('/hall/:id').get(auth,getReportByHallId);

@@ -5,7 +5,7 @@ const authAdmin=require("../middleware/authAdmin");
 const {CreateHall,deleteHall,
     addedLike,deleteLike,GetAllHall,updateHall,exploreHall,
     getHallById,trendHall,updateHallRate,getAllTypeHall,
-    getAllGovernorateHall,getAllRportPerHall} = require('../controllers/HallControl');
+    getAllGovernorateHall,getAllRportPerHall,updateHallImages,deleteImageFromSlider} = require('../controllers/HallControl');
 
 router.route('/').get(auth,GetAllHall);
 router.route('/trend').get(auth,trendHall);
@@ -22,6 +22,10 @@ router.route('/likes/:id').patch(auth,addedLike).delete(auth,deleteLike)
 router.route('/admin').get(auth,authAdmin ,getAllTypeHall);
 router.route('/admin/gover').get(auth,authAdmin ,getAllGovernorateHall);
 router.route('/admin/report').get(auth,authAdmin ,getAllRportPerHall);
+router.route('/admin/images/:id').patch(auth,authAdmin ,updateHallImages);
+router.route('/admin/imagesdeleted/').patch(auth,authAdmin ,deleteImageFromSlider);
+
+
 
 
 module.exports = router;

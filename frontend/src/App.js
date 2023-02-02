@@ -21,6 +21,7 @@ import AdminHome from "./pages/AdminPage/AdminHome";
 import CreateHall from "./pages/AdminPage/CreateHall";
 import AdminAllHall from "./pages/AdminPage/AdminAllHall";
 import AdminReports from "./pages/AdminPage/AdminReports";
+import AdminEditSliderImages from "./pages/AdminPage/AdminEditSliderImages";
 
 const theme = extendTheme({
   components: {
@@ -75,7 +76,7 @@ function App() {
           <Route
             exact
             path="/profile"
-            element={user ? <Profile /> : <Login />}
+            element={(user || admin) ? <Profile /> : <Login />}
           />
           {/*Reports Page*/}
 
@@ -130,6 +131,12 @@ function App() {
             exact
             path="/adminallreport"
             element={admin ? <AdminReports /> : <Login />}
+          />
+
+          <Route
+            exact
+            path="/admin/images/:id"
+            element={admin ? <AdminEditSliderImages /> : <Login />}
           />
           <Route path="*" exact element={<Notfound />} />
         </Routes>

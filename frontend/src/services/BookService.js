@@ -89,6 +89,15 @@ export const checkifThieranthorBookIntheSameDay = async (id, date,hallRef) => {
   return data;
 };
 
+
+export const checkifThieranthorBookIntheSameDayDuringBook = async ( date,hallRef) => {
+  const { data } = await axios.post(
+    `http://localhost:5000/api/v1/book/samebook/book`,
+    { date,hallRef },
+    config
+  );
+  return data;
+};
 export const addedNewBook = async (
   hallRef,
   firstname,

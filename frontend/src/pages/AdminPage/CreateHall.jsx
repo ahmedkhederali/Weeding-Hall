@@ -25,6 +25,7 @@ import {
   InputLeftElement,
   Select,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { People } from "@mui/icons-material";
 import React, { useState } from "react";
@@ -42,12 +43,14 @@ import {
 } from "react-icons/ai";
 import ThreePlans from "./ThreePlans";
 import { CreateAdminHall } from './../../services/AdminServices/CreateHall';
+import { useNavigate } from "react-router-dom";
 
 const CreateHall = () => {
   const [allData, setAllData] = useState({});
   const [avatar, setAvatar] = useState("");
   const [slider, setSlider] = useState([]);
-
+  const toast = useToast();
+  const nagivate=useNavigate()
   const [threeplan,setThreeplan]=useState([])
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -93,9 +96,22 @@ const CreateHall = () => {
     allData.threeplan = threeplan;
     console.log(allData);
     CreateAdminHall(allData).then((res)=>{
-      alert("Added")
+      toast({
+        title: "Hall Added",
+        description: `${res.data.msg}`,
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
+      nagivate("/adminallhall")
     }).catch((err)=>{
-      alert(err.message)
+      toast({
+        title: "Error!",
+        description: `${err.response.data.msg}`,
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
 
     })
   };
@@ -295,7 +311,7 @@ const CreateHall = () => {
               />
               <Input
                 id="chairs-name"
-                placeholder="planChairs"
+                placeholder="Chairs"
                 name="chairs"
                 type={"number"}
                 value={allData.chairs}
@@ -476,22 +492,8 @@ const CreateHall = () => {
               accept="image/*"
             />
           </FormControl>
+         
           <FormControl mr="5%">
-            <FormLabel htmlFor="hallSlider-name" fontWeight={"normal"}>
-              Hall Slider
-            </FormLabel>
-
-            <Input
-              id="hallSlider-name"
-              name="imgs"
-              type="file"
-              value={allData.imgs}
-              onChange={handleUploadSlider}
-              multiple
-              accept="image/*"
-            />
-          </FormControl>
-          <FormControl>
             <FormLabel htmlFor="plans-name" fontWeight={"normal"}>
               Hall Plans
             </FormLabel>

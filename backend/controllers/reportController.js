@@ -3,7 +3,7 @@ const Report = require('../models/Report');
 
 exports.getAllReports = async (req, res) => {
     try {
-        const reports = await Report.find({});
+        const reports = await Report.find({}).populate('userId')
 
         res.status(200).json({
             reports
