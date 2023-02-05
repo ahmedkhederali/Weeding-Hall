@@ -42,16 +42,18 @@ import {
   AiOutlineWhatsApp,
 } from "react-icons/ai";
 import ThreePlans from "./ThreePlans";
-import { CreateAdminHall } from './../../services/AdminServices/CreateHall';
+import { CreateAdminHall } from "./../../services/AdminServices/CreateHall";
 import { useNavigate } from "react-router-dom";
 
 const CreateHall = () => {
   const [allData, setAllData] = useState({});
   const [avatar, setAvatar] = useState("");
   const [slider, setSlider] = useState([]);
+  const [imgSize, setImageSize] = useState(false);
+
   const toast = useToast();
-  const nagivate=useNavigate()
-  const [threeplan,setThreeplan]=useState([])
+  const nagivate = useNavigate();
+  const [threeplan, setThreeplan] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleChange = (e) => {
@@ -63,31 +65,31 @@ const CreateHall = () => {
 
   //Handle Upload Images Poster
   const handleUpload = async (e) => {
+    debugger
     const reader = new FileReader();
-    reader.onload = async () => {
-      if (reader.readyState === 2) {
-        if (reader.result) {
-          const x = reader.result;
-          setAvatar(x);
+    
+      reader.onload = async () => {
+        if (reader.readyState === 2) {
+          if (reader.result) {
+            const x = reader.result;
+            setAvatar(x);
+          }
         }
-      }
-    };
-
-    reader.readAsDataURL(e.target.files[0]);
-  };
-
-  //Handle Upload Slider Images 
-  const handleUploadSlider = async (e) => {
-    const reader = new FileReader();
-    reader.onload = async () => {
-      if (reader.readyState === 2) {
-        if (reader.result) {
-          const x = reader.result;
-          setSlider(x);
-        }
-      }
-    };
-
+      };
+    
+    if (e.target.files[0].size > 57614) {
+      toast({
+        title: "ERROR!",
+        description: `Size of Image is To large`,
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
+      setImageSize(false);
+      allData.hallimgposter = "";
+    } else {
+      setImageSize(true);
+    }
     reader.readAsDataURL(e.target.files[0]);
   };
   const submit = () => {
@@ -95,25 +97,26 @@ const CreateHall = () => {
     allData.imgs = slider;
     allData.threeplan = threeplan;
     console.log(allData);
-    CreateAdminHall(allData).then((res)=>{
-      toast({
-        title: "Hall Added",
-        description: `${res.data.msg}`,
-        status: "success",
-        duration: 2000,
-        isClosable: true,
+    CreateAdminHall(allData)
+      .then((res) => {
+        toast({
+          title: "Hall Added",
+          description: `${res.data.msg}`,
+          status: "success",
+          duration: 2000,
+          isClosable: true,
+        });
+        nagivate("/adminallhall");
+      })
+      .catch((err) => {
+        toast({
+          title: "Error!",
+          description: `${err.response.data.msg}`,
+          status: "error",
+          duration: 2000,
+          isClosable: true,
+        });
       });
-      nagivate("/adminallhall")
-    }).catch((err)=>{
-      toast({
-        title: "Error!",
-        description: `${err.response.data.msg}`,
-        status: "error",
-        duration: 2000,
-        isClosable: true,
-      });
-
-    })
   };
   return (
     <>
@@ -176,7 +179,7 @@ const CreateHall = () => {
               value={allData.mohafza}
               onChange={(e) => handleChange(e)}
             >
-              <option value="caior">Cairo</option>
+              <option value="cairo">Cairo</option>
               <option value="menofia">Menofia</option>
             </Select>
           </FormControl>
@@ -488,11 +491,10 @@ const CreateHall = () => {
               type="file"
               value={allData.hallimgposter}
               onChange={handleUpload}
-              
               accept="image/*"
             />
           </FormControl>
-         
+
           <FormControl mr="5%">
             <FormLabel htmlFor="plans-name" fontWeight={"normal"}>
               Hall Plans
@@ -502,8 +504,6 @@ const CreateHall = () => {
               Open PLans Drawer
             </Button>
           </FormControl>
-
-          
         </Flex>
 
         <Box
@@ -522,7 +522,11 @@ const CreateHall = () => {
         </Box>
       </Box>
 
-      <ThreePlans isOpen={isOpen} onClose={onClose} setThreeplan={setThreeplan} />
+      <ThreePlans
+        isOpen={isOpen}
+        onClose={onClose}
+        setThreeplan={setThreeplan}
+      />
     </>
   );
 };

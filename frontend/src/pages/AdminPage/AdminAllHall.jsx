@@ -171,7 +171,7 @@ const AdminAllHall = () => {
           )}
         </Box>
       </Box>
-      {hallID && <AdminEditHall isOpen={isOpen} onClose={onClose} hallId={hallID} />}
+      {hallID && <AdminEditHall isOpen={isOpen} onClose={onClose} hallId={hallID} refresh={refresh} setRefresh={setRefresh}/>}
     </>
   );
 };

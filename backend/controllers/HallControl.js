@@ -63,7 +63,7 @@ const CreateHall = async (req, res) => {
       name,
       namear,
       capacity,
-      // imgs,
+       //imgs,
       location,
       locationar,
       floor,
@@ -104,10 +104,10 @@ const CreateHall = async (req, res) => {
       !whatsup ||
       !instagram
     ) {
-      res.status(500).json({ msg: "Please Enter All Data" });
+      return res.status(500).json({ msg: "Please Enter All Data" });
     }
     if (phone.length !== 11) {
-      res.status(500).json({ msg: "Enter Vaild Number phone" });
+      return res.status(500).json({ msg: "Enter Vaild Number phone" });
     }
 
     if (
@@ -116,7 +116,7 @@ const CreateHall = async (req, res) => {
       !phone.startsWith("011") &&
       !phone.startsWith("012")
     ) {
-      res.status(500).json({ msg: "Enter Vaild Number phone" });
+      return res.status(500).json({ msg: "Enter Vaild Number phone" });
     }
 
     const myCloud = await cloudinary.v2.uploader.upload(
@@ -133,7 +133,7 @@ const CreateHall = async (req, res) => {
       namear,
       capacity,
       mohafzaar,
-      // imgs,
+     // imgs,
       floor,
       threeplan,
       location,
@@ -154,7 +154,7 @@ const CreateHall = async (req, res) => {
       instagram,
     });
     await newHall.save();
-    res.status(200).json({ newHall, msg: "successFully Added New Hall" });
+    return res.status(200).json({ newHall, msg: "successFully Added New Hall" });
   } catch (error) {
     return res.status(500).json({
       msg: error.message,

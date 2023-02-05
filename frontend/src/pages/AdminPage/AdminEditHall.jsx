@@ -16,6 +16,7 @@ import {
   InputGroup,
   InputLeftElement,
   Select,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import {
@@ -30,14 +31,15 @@ import { getHallById } from "./../../services/HallServices";
 import { People } from "@mui/icons-material";
 import { FiDollarSign } from "react-icons/fi";
 import { PhoneIcon } from "@chakra-ui/icons";
-import { FaChair } from "react-icons/fa";
+import { FaChair } from "react-icons/fa"; 
 import { GiTable } from "react-icons/gi";
 import { FaFacebookF } from "react-icons/fa";
 import { FaFacebookMessenger } from "react-icons/fa";
-import TextSnippetIcon from '@mui/icons-material/TextSnippet';
-import LiquorIcon from '@mui/icons-material/Liquor';
-import CakeIcon from '@mui/icons-material/Cake';
-const AdminEditHall = ({ isOpen, onClose, hallId }) => {
+import TextSnippetIcon from "@mui/icons-material/TextSnippet";
+import LiquorIcon from "@mui/icons-material/Liquor";
+import CakeIcon from "@mui/icons-material/Cake";
+import { updateHallByIDS } from "../../services/AdminServices/UpdateHall";
+const AdminEditHall = ({ isOpen, onClose, hallId,setRefresh,refresh }) => {
   const [name, setName] = useState("");
   const [namear, setNamear] = useState("");
   const [mohafza, setMohafza] = useState("");
@@ -82,6 +84,8 @@ const AdminEditHall = ({ isOpen, onClose, hallId }) => {
   const [plancans2, setPlancans2] = useState("");
 
   const [hall, setHall] = useState([]);
+  const toast = useToast();
+
   useEffect(() => {
     getHallById(hallId)
       .then((res) => {
@@ -134,11 +138,49 @@ const AdminEditHall = ({ isOpen, onClose, hallId }) => {
       });
   }, []);
 
-  const updateHall=()=>{
-    
-    console.log(name,namear,mohafza,capacity,price,mohafzaar,location
-      ,locationar,phone,chairs,tables,halltype,floor,facebook,instagram,messanger,whatsup,videoUrl )
-  }
+  const updateHall = () => {
+   
+    updateHallByIDS(hallId,  {
+      name,
+      namear,
+      mohafza,
+      capacity,
+      price,
+      mohafzaar,
+      location,
+      locationar,
+      phone,
+      chairs,
+      tables,
+      halltype,
+      floor,
+      facebook,
+      instagram,
+      messanger,
+      whatsup,
+      videoUrl,
+    })
+      .then((res) => {
+        toast({
+          title: "Updated Success",
+          description: "Hall Updated",
+          status: "success",
+          duration: 2000,
+          isClosable: true,
+        });
+        setRefresh(!refresh)
+        onClose();
+      })
+      .catch((err) => {
+        toast({
+          title: "Error!",
+          description: `${err.msg}`,
+          status: "error",
+          duration: 2000,
+          isClosable: true,
+        });
+      });
+  };
   return (
     <>
       {hall && (
@@ -151,7 +193,11 @@ const AdminEditHall = ({ isOpen, onClose, hallId }) => {
           <DrawerOverlay />
           <DrawerContent>
             <DrawerCloseButton />
-            <DrawerHeader>Edit {name.toUpperCase()} Hall</DrawerHeader>
+            <DrawerHeader>
+              <Center fontSize={25} fontWeight="bold">
+                Edit {name.toUpperCase()} Hall
+              </Center>
+            </DrawerHeader>
 
             {hall ? (
               <DrawerBody>
@@ -517,7 +563,7 @@ const AdminEditHall = ({ isOpen, onClose, hallId }) => {
                     <InputGroup>
                       <InputLeftElement
                         pointerEvents="none"
-                        children={<TextSnippetIcon  color="gray.300" />}
+                        children={<TextSnippetIcon color="gray.300" />}
                       />
                       <Input
                         value={planHeader}
@@ -910,7 +956,6 @@ const AdminEditHall = ({ isOpen, onClose, hallId }) => {
                     </FormControl>
                   </Flex>
                 </Box>
-
               </DrawerBody>
             ) : (
               <LoadingPage />
@@ -920,7 +965,9 @@ const AdminEditHall = ({ isOpen, onClose, hallId }) => {
               <Button variant="outline" mr={3} onClick={onClose}>
                 Cancel
               </Button>
-              <Button colorScheme="blue" onClick={updateHall}>Update</Button>
+              <Button colorScheme="blue" onClick={updateHall}>
+                Update
+              </Button>
             </DrawerFooter>
           </DrawerContent>
         </Drawer>

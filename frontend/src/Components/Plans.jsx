@@ -102,31 +102,27 @@ export default function ThreeTierPricing({ hall }) {
                     <List spacing={3} textAlign="start" px={12} key={i._id}>
                       <ListItem>
                         <ListIcon as={FaChair} color="green.500" />
-                       {i.chairs}{" "} Chair
+                       {i.planchairs}{" "} Chair
                       </ListItem>
                       <ListItem>
                         <ListIcon as={GiTable} color="green.500" />
-                        {i.tables}{" "} Table
+                        {i.plantables}{" "} Table
                       </ListItem>
                       <ListItem>
                         <ListIcon as={AiOutlineTable} color="green.500" />
-                        {i.floors}{" "} Floor
+                        {i.planfloors}{" "} Floor
                       </ListItem>
                       <ListItem>
                         <ListIcon as={GiCakeSlice} color="green.500" />
-                        {i.cake}{" "} Cake
+                        {i.plancake}{" "} Cake
                       </ListItem>
                       <ListItem>
                         <ListIcon as={FaWineGlass} color="green.500" />
-                        {i.cans}{" "} Can
+                        {i.plancans}{" "} Can
                       </ListItem>
                     </List>
           ))}
-                <Box w="80%" pt={7}>
-                  <Button w="full" colorScheme="red" variant="outline">
-                    Book Now
-                  </Button>
-                </Box>
+               
               </VStack>
               </Box>
             </PriceWrapper>

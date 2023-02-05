@@ -46,22 +46,22 @@ const HallSchema = new mongoose.Schema({
     {
       public_id: {
         type: String,
-        required: [true, "public_id"],
+        default:"imgs",
       },
       url: {
         type: String,
-        required: [true, "Please Enter Hall Img Poster url"]
+        default:"https://images.unsplash.com/photo-1542665952-14513db15293?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8d2VkZGluZyUyMGhhbGx8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
       },
     },
   ],
   hallimgposter: {
     public_id: {
       type: String,
-      required: [true, "public_id"],
+      default:"test_id",
     },
     url: {
       type: String,
-      required: [true, "Please Enter Hall Img Poster url"],
+     default:"https://images.unsplash.com/photo-1542665952-14513db15293?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8d2VkZGluZyUyMGhhbGx8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
     },
   },
   threeplan: [

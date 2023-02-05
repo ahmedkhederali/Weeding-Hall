@@ -56,27 +56,52 @@ exports.getBookById = async (req, res) => {
     });
   }
 };
+const formateDate =  (date) => {
+  var dates = new Date(date);
+  var day = dates.getDate();
+  var month = dates.getMonth() + 1;
+  var year = dates.getFullYear();
 
+  if (month < 10) month = "0" + month;
+  if (day < 10) day = "0" + day;
+
+  var today = year + "-" + month + "-" + day;
+
+  return today;
+};
 exports.updateBook = async (req, res) => {
   try {
-    const checkBok = await Book.find({
-      $and: [{ hallRef: req.body.hallRef }, { date: req.body.date }],
-    });
-    if (checkBok.length === 0) {
+
+    const booked=await Book.find({_id: req.params.id});
+    const today=formateDate(booked[0].date )
+    if(today === req.body.date){
       const book = await Book.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
       });
-
       res.status(200).json({
         status: "success",
         book,
       });
     }else{
-        res.status(00).json({
-            status: "booked",
-            msg: "sorry There is Weeding In this Day In this Hall",
-          });
+      const checkBok = await Book.find({
+        $and: [{ hallRef: req.body.hallRef }, { date: req.body.date }],
+      });
+      if (checkBok.length === 0) {
+        const book = await Book.findByIdAndUpdate(req.params.id, req.body, {
+          new: true,
+        });
+        res.status(200).json({
+          status: "success",
+          book,
+        });
+      }else{
+          res.status(200).json({
+              status: "booked",
+              msg: "sorry There is Weeding In this Day In this Hall",
+            });
+      }
     }
+   
   } catch (error) {
     res.status(400).json({
       status: "failed",

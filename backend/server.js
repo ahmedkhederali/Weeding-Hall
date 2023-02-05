@@ -15,10 +15,10 @@ mongoose.set("strictQuery", true);
 //MiddleWare
 
 app.use(express.json());
-app.use(morgan("tiny"));
 app.use(cors());
-app.use(bodyParser.json({ limit: '500mb' }));
-app.use(bodyParser.urlencoded({ limit: '500mb', extended: true, parameterLimit: 50000 }));
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+app.use(morgan("tiny"));
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -68,50 +68,50 @@ const start = async () => {
     const server = app.listen(Port, () =>
       console.log(`Server is listening port ${Port}...`)
     );
-    //socket.io
-    const io = require("socket.io")(server, {
-      pingTimeout: 60000,
-      cors: {
-        origin: "http://localhost:3000",
-      },
-    });
+    // //socket.io
+    // const io = require("socket.io")(server, {
+    //   pingTimeout: 60000,
+    //   cors: {
+    //     origin: "http://localhost:3000",
+    //   },
+    // });
 
-    // To make connection
-    io.on("connection",(socket)=>{
-      console.log("connect")
-      // setup used To create new socket
-      socket.on('setup',(userData)=>{
-        console.log("line 81" , userData)
-        socket.join(userData._id);
-        socket.emit("connected")
-      })
-     // create a room for chat 
-      socket.on("join chat" ,(room)=>{
-        socket.join(room);//make a unique room  for selected users
-        console.log("User Joined Room " + room)
-      })
-      // handle Typing , stop Typing
-      socket.on("typing", (room) => socket.in(room).emit("typing"));
-      socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
+    // // To make connection
+    // io.on("connection",(socket)=>{
+    //   console.log("connect")
+    //   // setup used To create new socket
+    //   socket.on('setup',(userData)=>{
+    //     console.log("line 81" , userData)
+    //     socket.join(userData._id);
+    //     socket.emit("connected")
+    //   })
+    //  // create a room for chat 
+    //   socket.on("join chat" ,(room)=>{
+    //     socket.join(room);//make a unique room  for selected users
+    //     console.log("User Joined Room " + room)
+    //   })
+    //   // handle Typing , stop Typing
+    //   socket.on("typing", (room) => socket.in(room).emit("typing"));
+    //   socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
 
-      //handle New Message
-      socket.on("new message", (newMessageRecieved) => {
-        var chat = newMessageRecieved.chat; 
-        if (!chat.users) return console.log("chat.users not defined");
-        chat.users.forEach((user) => {
-         //to didn't send to me 
-          if (user._id == newMessageRecieved.sender._id) return;
+    //   //handle New Message
+    //   socket.on("new message", (newMessageRecieved) => {
+    //     var chat = newMessageRecieved.chat; 
+    //     if (!chat.users) return console.log("chat.users not defined");
+    //     chat.users.forEach((user) => {
+    //      //to didn't send to me 
+    //       if (user._id == newMessageRecieved.sender._id) return;
 
-          //loop in users and execute this emit on each user
-           socket.in(user._id).emit("message recieved", newMessageRecieved);
-         });
-      });
-      socket.off("setup", () => {
-        console.log("USER DISCONNECTED");
-        socket.leave(userData._id);
-      });
+    //       //loop in users and execute this emit on each user
+    //        socket.in(user._id).emit("message recieved", newMessageRecieved);
+    //      });
+    //   });
+    //   socket.off("setup", () => {
+    //     console.log("USER DISCONNECTED");
+    //     socket.leave(userData._id);
+    //   });
 
-    })
+    // })
   } catch (error) {
     console.log(error);
   }

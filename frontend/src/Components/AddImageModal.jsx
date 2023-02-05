@@ -21,7 +21,22 @@ const handleUpload = async (e) => {
         }
       }
     };
+    
+    if(e.target.files[0].size >64326){
+     
+      toast({
+        title: "ERROR!",
+        description: `Size of Image is To large`,
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
 
+      onClose()
+
+    }
+
+    console.log(e.target.files[0].size)
     reader.readAsDataURL(e.target.files[0]);
   };
 
