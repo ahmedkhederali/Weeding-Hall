@@ -3,7 +3,7 @@ const router = express.Router();
 const auth=require("../middleware/auth");
 const authAdmin=require("../middleware/authAdmin");
 const {CreateHall,deleteHall,
-    addedLike,deleteLike,GetAllHall,updateHall,exploreHall,
+    addedLike,deleteLike,GetAllHall,updateHall2,exploreHall,
     getHallById,trendHall,updateHallRate,getAllTypeHall,
     getAllGovernorateHall,getAllRportPerHall,updateHallImages,deleteImageFromSlider} = require('../controllers/HallControl');
 
@@ -13,7 +13,7 @@ router.route('/explore').get(auth,exploreHall);
 
 
 router.route('/hall').post(auth,authAdmin,CreateHall);
-router.route('/hall/:id').patch(auth,authAdmin,deleteHall).put(auth,authAdmin,updateHall).get(auth,getHallById)
+router.route('/hall/:id').patch(auth,authAdmin,deleteHall).put(auth,authAdmin,updateHall2).get(auth,getHallById)
 router.route('/hallrateupdate/:id').patch(auth,updateHallRate)
 router.route('/likes/:id').patch(auth,addedLike).delete(auth,deleteLike)
 

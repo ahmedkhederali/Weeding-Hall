@@ -252,7 +252,7 @@ const updateHall = async (req, res) => {
       !phone ||
       !hallimgposter ||
       !halltype ||
-      !threeplan ||
+      !threeplan || 
       !facebook ||
       !messanger ||
       !whatsup
@@ -305,6 +305,23 @@ const updateHall = async (req, res) => {
     });
   }
 };
+
+const updateHall2=async (req,res)=>{
+  try {
+      const hall = await Hall.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+      });
+      res.status(200).json({
+        status: "success",
+        hall,
+      });
+  } catch (error) {
+    res.status(400).json({
+      status: "failed",
+      error,
+    });
+  }
+}
 const updateHallImages = async (req, res) => {
   try {
     const singleHall = await Hall.findById(req.params.id);
@@ -583,4 +600,5 @@ module.exports = {
   getAllRportPerHall,
   deleteImageFromSlider,
   updateHallImages,
+  updateHall2
 };

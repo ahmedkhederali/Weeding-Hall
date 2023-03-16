@@ -140,7 +140,7 @@ const AdminEditHall = ({ isOpen, onClose, hallId,setRefresh,refresh }) => {
 
   const updateHall = () => {
    
-    updateHallByIDS(hallId,  {
+    updateHallByIDS(hallId,
       name,
       namear,
       mohafza,
@@ -158,8 +158,7 @@ const AdminEditHall = ({ isOpen, onClose, hallId,setRefresh,refresh }) => {
       instagram,
       messanger,
       whatsup,
-      videoUrl,
-    })
+      videoUrl,)
       .then((res) => {
         toast({
           title: "Updated Success",
