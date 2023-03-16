@@ -38,7 +38,6 @@ import { Email } from "@mui/icons-material";
 import AddLocationIcon from "@mui/icons-material/AddLocation";
 
 export default function Contact({ hall }) {
-  console.log("Done")
   const colors = useColorModeValue("gray.100", "gray.900");
   const colors2 = useColorModeValue("black.300", "white.900");
   const [name, setName] = useState("");
@@ -55,7 +54,7 @@ export default function Contact({ hall }) {
         description: "UserName is Short...",
         status: "error",
         duration: 2000,
-        isClosable: true, 
+        isClosable: true,
       });
     } else if (
       phone.length < 11 ||
