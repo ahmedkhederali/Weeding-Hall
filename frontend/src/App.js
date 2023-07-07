@@ -22,7 +22,9 @@ import CreateHall from "./pages/AdminPage/CreateHall";
 import AdminAllHall from "./pages/AdminPage/AdminAllHall";
 import AdminReports from "./pages/AdminPage/AdminReports";
 import AdminEditSliderImages from "./pages/AdminPage/AdminEditSliderImages";
-
+import CaptionCarousel from "./pages/LibararyCarasoul/LibararyCarasoul";
+import LibararyContentPage from "./pages/LibararyContentPage/LibararyContentPage";
+import AboutLibarary from "./pages/StaticData/AboutLibarary"
 const theme = extendTheme({
   components: {
     Steps,
@@ -44,6 +46,11 @@ function App() {
             path="/register"
             element={user ? <Hall /> : <Register />}
           />
+           <Route
+            exact
+            path="/about"
+            element={user ? <AboutLibarary /> : <Register />}
+          />
           {/*User Page Reset Password */}
 
           <Route
@@ -62,7 +69,7 @@ function App() {
           <Route
             exact
             path="/"
-            element={admin ? <AdminHome /> : user ? <Hall /> : <Login />}
+            element={admin ? <AdminHome /> : user ? <LibararyContentPage/> : <Login />}
           />
           {/*Page of Specific Hall*/}
           <Route

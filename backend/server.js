@@ -37,6 +37,9 @@ app.use("/api/v1/comments", require("./routes/commentRoute"));
 app.use("/api/v1/ratings", require("./routes/ratingRoutes"));
 app.use("/api/v1/report", require("./routes/ReportRoute"));
 app.use("/api/v1/book", require("./routes/BookRoute"));
+// for books 
+app.use("/api/v1/books", require("./routes/BooksRoutes"));
+app.use("/api/v1/articls", require("./routes/ArticleRoutes"));
 
 
 
