@@ -26,20 +26,6 @@ export const getUserByID = async (id) => {
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 export const BookFun = async (
   first_name,
   second_name,
